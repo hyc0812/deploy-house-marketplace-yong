@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
+import OAuth from "../components/OAuth";
 
 export default function SignIn(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +46,6 @@ export default function SignIn(props) {
         <header>
           <p className="pageHeader">Welcome Back!</p>
         </header>
-
         <form onSubmit={onSubmit}>
           <input
             type="email"
@@ -85,8 +85,7 @@ export default function SignIn(props) {
             </button>
           </div>
         </form>
-        {/* Google OAuth */}
-
+        <OAuth />
         <Link to="/sign-up" className="registerLink">
           Sign Up Instead
         </Link>
