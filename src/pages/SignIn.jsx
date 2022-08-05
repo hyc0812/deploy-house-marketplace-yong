@@ -2,19 +2,20 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import OAuth from "../components/OAuth";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
-import OAuth from "../components/OAuth";
 
-export default function SignIn(props) {
+function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
   const { email, password } = formData;
+
   const navigate = useNavigate();
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -27,11 +28,13 @@ export default function SignIn(props) {
 
     try {
       const auth = getAuth();
+
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+
       if (userCredential.user) {
         navigate("/");
       }
@@ -46,6 +49,7 @@ export default function SignIn(props) {
         <header>
           <p className="pageHeader">Welcome Back!</p>
         </header>
+
         <form onSubmit={onSubmit}>
           <input
             type="email"
@@ -85,7 +89,9 @@ export default function SignIn(props) {
             </button>
           </div>
         </form>
+
         <OAuth />
+
         <Link to="/sign-up" className="registerLink">
           Sign Up Instead
         </Link>
@@ -93,3 +99,5 @@ export default function SignIn(props) {
     </>
   );
 }
+
+export default SignIn;

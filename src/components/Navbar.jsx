@@ -3,7 +3,7 @@ import { ReactComponent as OfferIcon } from "../assets/svg/localOfferIcon.svg";
 import { ReactComponent as ExploreIcon } from "../assets/svg/exploreIcon.svg";
 import { ReactComponent as PersonOutlineIcon } from "../assets/svg/personOutlineIcon.svg";
 
-export default function Navbar(props) {
+function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,6 +12,7 @@ export default function Navbar(props) {
       return true;
     }
   };
+
   return (
     <footer className="navbar">
       <nav className="navbarNav">
@@ -40,7 +41,7 @@ export default function Navbar(props) {
             />
             <p
               className={
-                pathMatchRoute("/offers")
+                pathMatchRoute("/offer")
                   ? "navbarListItemNameActive"
                   : "navbarListItemName"
               }
@@ -69,3 +70,5 @@ export default function Navbar(props) {
     </footer>
   );
 }
+
+export default Navbar;

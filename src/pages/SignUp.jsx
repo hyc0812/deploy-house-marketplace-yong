@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -7,20 +8,21 @@ import {
 } from "firebase/auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
+import OAuth from "../components/OAuth";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
-import { toast } from "react-toastify";
 
-export default function SignUp(props) {
+function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-
   const { name, email, password } = formData;
+
   const navigate = useNavigate();
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -30,13 +32,16 @@ export default function SignUp(props) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const auth = getAuth();
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+
       const user = userCredential.user;
 
       updateProfile(auth.currentUser, {
@@ -48,10 +53,10 @@ export default function SignUp(props) {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, "users", user.uid), formDataCopy);
-      toast.success("Sign Up Succeed");
+
       navigate("/");
     } catch (error) {
-      toast.error("Please check and try again");
+      toast.error("Something went wrong with registration");
     }
   };
 
@@ -71,7 +76,6 @@ export default function SignUp(props) {
             value={name}
             onChange={onChange}
           />
-
           <input
             type="email"
             className="emailInput"
@@ -110,7 +114,8 @@ export default function SignUp(props) {
             </button>
           </div>
         </form>
-        {/* Google OAuth */}
+
+        <OAuth />
 
         <Link to="/sign-in" className="registerLink">
           Sign In Instead
@@ -119,3 +124,5 @@ export default function SignUp(props) {
     </>
   );
 }
+
+export default SignUp;

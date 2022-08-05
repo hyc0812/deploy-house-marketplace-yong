@@ -6,7 +6,9 @@ import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRig
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+
   const onChange = (e) => setEmail(e.target.value);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -17,6 +19,7 @@ function ForgotPassword() {
       toast.error("Could not send reset email");
     }
   };
+
   return (
     <div className="pageContainer">
       <header>
@@ -26,15 +29,14 @@ function ForgotPassword() {
       <main>
         <form onSubmit={onSubmit}>
           <input
-            type="text"
+            type="email"
             className="emailInput"
-            placeholder="email"
+            placeholder="Email"
             id="email"
             value={email}
             onChange={onChange}
           />
           <Link className="forgotPasswordLink" to="/sign-in">
-            {" "}
             Sign In
           </Link>
 
