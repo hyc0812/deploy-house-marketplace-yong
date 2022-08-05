@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { getAuth, updateProfile } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { updateDoc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.config";
+import { toast } from "react-toastify";
 
 export default function Profile(props) {
   const auth = getAuth();
@@ -20,8 +21,22 @@ export default function Profile(props) {
     navigate("/");
   };
 
-  const onSumbit = () => {
-    console.log(123);
+  const onSumbit = async () => {
+    try {
+      if (auth.currentUser.displayName !== name) {
+        // update display name in fb
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+        });
+        // update firestore
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        await updateDoc(userRef, {
+          name,
+        });
+      }
+    } catch (error) {
+      toast.error("Could not update profile details");
+    }
   };
 
   const onChange = (e) => {
