@@ -9,6 +9,7 @@ import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
+import { toast } from "react-toastify";
 
 export default function SignUp(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,9 +48,10 @@ export default function SignUp(props) {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, "users", user.uid), formDataCopy);
+      toast.success("Sign Up Succeed");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      toast.error("Please check and try again");
     }
   };
 
